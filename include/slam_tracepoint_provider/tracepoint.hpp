@@ -20,13 +20,13 @@ LTTNG_UST_TRACEPOINT_EVENT_CLASS(
 
     ros2_callback_class,
 
-    LTTNG_UST_TP_ARGS(std::shared_ptr<rclcpp::Node>&, node, rclcpp::Time const&,
+    LTTNG_UST_TP_ARGS(std::shared_ptr<rclcpp::Node>, node, rclcpp::Time const&,
                       timepoint, std::string, label),
 
-    LTTNG_UST_TP_FIELDS(lttng_ust_field_string(node_name, node->get_name())
-                            lttng_ust_field_float(double, stamp,
-                                                  timepoint.seconds())
-                                lttng_ust_field_string(label, label.c_str()))
+    LTTNG_UST_TP_FIELDS(
+        lttng_ust_field_string(node_name, node ? node->get_name() : "")
+            lttng_ust_field_float(double, stamp, timepoint.seconds())
+                lttng_ust_field_string(label, label.c_str()))
 
 )
 
@@ -40,7 +40,7 @@ LTTNG_UST_TRACEPOINT_EVENT_INSTANCE(
 
     ros2_callback_enter,
 
-    LTTNG_UST_TP_ARGS(std::shared_ptr<rclcpp::Node>&, node, rclcpp::Time const&,
+    LTTNG_UST_TP_ARGS(std::shared_ptr<rclcpp::Node>, node, rclcpp::Time const&,
                       timepoint, std::string, label)
 
 )
@@ -55,7 +55,7 @@ LTTNG_UST_TRACEPOINT_EVENT_INSTANCE(
 
     ros2_callback_exit,
 
-    LTTNG_UST_TP_ARGS(std::shared_ptr<rclcpp::Node>&, node, rclcpp::Time const&,
+    LTTNG_UST_TP_ARGS(std::shared_ptr<rclcpp::Node>, node, rclcpp::Time const&,
                       timepoint, std::string, label)
 
 )
@@ -74,12 +74,12 @@ LTTNG_UST_TRACEPOINT_EVENT_CLASS(
 
     compute_class,
 
-    LTTNG_UST_TP_ARGS(std::shared_ptr<rclcpp::Node>&, node,
+    LTTNG_UST_TP_ARGS(std::shared_ptr<rclcpp::Node>, node,
                       std::chrono::nanoseconds const&, duration, std::string,
                       label),
 
     LTTNG_UST_TP_FIELDS(
-        lttng_ust_field_string(node_name, node->get_name())
+        lttng_ust_field_string(node_name, node ? node->get_name() : "")
             lttng_ust_field_float(double, duration,
                                   static_cast<double>(duration.count()))
                 lttng_ust_field_string(label, label.c_str()))
@@ -96,7 +96,7 @@ LTTNG_UST_TRACEPOINT_EVENT_INSTANCE(
 
     compute_cpu,
 
-    LTTNG_UST_TP_ARGS(std::shared_ptr<rclcpp::Node>&, node,
+    LTTNG_UST_TP_ARGS(std::shared_ptr<rclcpp::Node>, node,
                       std::chrono::nanoseconds const&, duration, std::string,
                       label)
 
@@ -111,7 +111,7 @@ LTTNG_UST_TRACEPOINT_EVENT_INSTANCE(
     LTTNG_UST_TRACEPOINT_PROVIDER,
 
     compute_fpga,
-    LTTNG_UST_TP_ARGS(std::shared_ptr<rclcpp::Node>&, node,
+    LTTNG_UST_TP_ARGS(std::shared_ptr<rclcpp::Node>, node,
                       std::chrono::nanoseconds const&, duration, std::string,
                       label)
 
