@@ -117,6 +117,23 @@ LTTNG_UST_TRACEPOINT_LOGLEVEL(LTTNG_UST_TRACEPOINT_PROVIDER, compute_cpu,
 LTTNG_UST_TRACEPOINT_LOGLEVEL(LTTNG_UST_TRACEPOINT_PROVIDER, compute_fpga,
                               LTTNG_UST_TRACEPOINT_LOGLEVEL_INFO)
 
+/* helper macros */
+
+#define TP_CALLBACK_ENTER(node, time, label)                                \
+  lttng_ust_tracepoint(slam_tracepoint_provider, ros2_callback_enter, node, \
+                       time, label)
+#define TP_CALLBACK_EXIT(node, time, label)                                \
+  lttng_ust_tracepoint(slam_tracepoint_provider, ros2_callback_exit, node, \
+                       time, label)
+
+#define TP_COMPUTE_CPU(node, start_time, end_time, label)           \
+  lttng_ust_tracepoint(slam_tracepoint_provider, compute_cpu, node, \
+                       start_time, end_time, label)
+
+#define TP_COMPUTE_FPGA(node, start_time, end_time, label)           \
+  lttng_ust_tracepoint(slam_tracepoint_provider, compute_fpga, node, \
+                       start_time, end_time, label)
+
 #endif /* _TP_H */
 
 #include <lttng/tracepoint-event.h>
