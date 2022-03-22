@@ -10,6 +10,7 @@
 #include <lttng/tracepoint.h>
 
 #include <rclcpp/rclcpp.hpp>
+#include <string>
 
 /* ros2 callback tracepoints */
 
@@ -19,12 +20,12 @@ LTTNG_UST_TRACEPOINT_EVENT_CLASS(
     ros2_callback_class,
 
     LTTNG_UST_TP_ARGS(std::shared_ptr<rclcpp::Node>&, node, rclcpp::Time const&,
-                      timepoint, char const*, label),
+                      timepoint, std::string, label),
 
     LTTNG_UST_TP_FIELDS(lttng_ust_field_string(node_name, node->get_name())
                             lttng_ust_field_float(double, stamp,
                                                   timepoint.seconds())
-                                lttng_ust_field_string(label, label))
+                                lttng_ust_field_string(label, label.c_str()))
 
 )
 
@@ -39,7 +40,7 @@ LTTNG_UST_TRACEPOINT_EVENT_INSTANCE(
     ros2_callback_enter,
 
     LTTNG_UST_TP_ARGS(std::shared_ptr<rclcpp::Node>&, node, rclcpp::Time const&,
-                      timepoint, char const*, label)
+                      timepoint, std::string, label)
 
 )
 
@@ -54,7 +55,7 @@ LTTNG_UST_TRACEPOINT_EVENT_INSTANCE(
     ros2_callback_exit,
 
     LTTNG_UST_TP_ARGS(std::shared_ptr<rclcpp::Node>&, node, rclcpp::Time const&,
-                      timepoint, char const*, label)
+                      timepoint, std::string, label)
 
 )
 
@@ -73,13 +74,13 @@ LTTNG_UST_TRACEPOINT_EVENT_CLASS(
     compute_class,
 
     LTTNG_UST_TP_ARGS(std::shared_ptr<rclcpp::Node>&, node, rclcpp::Time const&,
-                      start, rclcpp::Time const&, end, char const*, label),
+                      start, rclcpp::Time const&, end, std::string, label),
 
     LTTNG_UST_TP_FIELDS(
         lttng_ust_field_string(node_name, node->get_name())
             lttng_ust_field_float(double, start_stamp, start.seconds())
                 lttng_ust_field_float(double, end_stamp, end.seconds())
-                    lttng_ust_field_string(label, label))
+                    lttng_ust_field_string(label, label.c_str()))
 
 )
 
@@ -94,7 +95,7 @@ LTTNG_UST_TRACEPOINT_EVENT_INSTANCE(
     compute_cpu,
 
     LTTNG_UST_TP_ARGS(std::shared_ptr<rclcpp::Node>&, node, rclcpp::Time const&,
-                      start, rclcpp::Time const&, end, char const*, label)
+                      start, rclcpp::Time const&, end, std::string, label)
 
 )
 
@@ -109,7 +110,7 @@ LTTNG_UST_TRACEPOINT_EVENT_INSTANCE(
     compute_fpga,
 
     LTTNG_UST_TP_ARGS(std::shared_ptr<rclcpp::Node>&, node, rclcpp::Time const&,
-                      start, rclcpp::Time const&, end, char const*, label)
+                      start, rclcpp::Time const&, end, std::string, label)
 
 )
 
