@@ -16,17 +16,21 @@ pkg_check_modules(lttng REQUIRED IMPORTED_TARGET lttng-ust)
 add_library(${PROJECT_NAME} SHARED  src/tracepoint.cpp)
 target_include_directories(${PROJECT_NAME}
   PUBLIC
-    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include/>
-    $<INSTALL_INTERFACE:include/>
-  PRIVATE
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+    $<INSTALL_INTERFACE:include>
+    ${lttng_INCLUDE_DIRS}
+    PRIVATE
     src/
 )
+
 target_link_libraries(${PROJECT_NAME} 
   PUBLIC
-    PkgConfig::lttng 
+    ${lttng_LIBRARIES}
     rclcpp::rclcpp
 )
 
+ament_export_targets(${PROJECT_NAME}Targets HAS_LIBRARY_TARGET)
+ament_export_dependencies(rclcpp)
 
 install(
   DIRECTORY include/
@@ -36,11 +40,14 @@ install(
 install(
   TARGETS
     ${PROJECT_NAME}
+  EXPORT ${PROJECT_NAME}Targets
   LIBRARY DESTINATION lib
   ARCHIVE DESTINATION lib
   RUNTIME DESTINATION lib/${PROJECT_NAME}
   INCLUDES DESTINATION include
 )
+
+
 
 
 if(BUILD_TESTING)

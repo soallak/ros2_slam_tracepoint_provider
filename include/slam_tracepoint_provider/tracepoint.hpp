@@ -2,7 +2,7 @@
 #define LTTNG_UST_TRACEPOINT_PROVIDER slam_tracepoint_provider
 
 #undef LTTNG_UST_TRACEPOINT_INCLUDE
-#define LTTNG_UST_TRACEPOINT_INCLUDE "./tracepoint.h"
+#define LTTNG_UST_TRACEPOINT_INCLUDE "slam_tracepoint_provider/tracepoint.hpp"
 
 #if !defined(_TP_H) || defined(LTTNG_UST_TRACEPOINT_HEADER_MULTI_READ)
 #define _TP_H
