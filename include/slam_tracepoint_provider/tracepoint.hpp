@@ -9,6 +9,7 @@
 
 #include <lttng/tracepoint.h>
 
+#include <chrono>
 #include <rclcpp/rclcpp.hpp>
 #include <string>
 
@@ -73,14 +74,15 @@ LTTNG_UST_TRACEPOINT_EVENT_CLASS(
 
     compute_class,
 
-    LTTNG_UST_TP_ARGS(std::shared_ptr<rclcpp::Node>&, node, rclcpp::Time const&,
-                      start, rclcpp::Time const&, end, std::string, label),
+    LTTNG_UST_TP_ARGS(std::shared_ptr<rclcpp::Node>&, node,
+                      std::chrono::nanoseconds const&, duration, std::string,
+                      label),
 
     LTTNG_UST_TP_FIELDS(
         lttng_ust_field_string(node_name, node->get_name())
-            lttng_ust_field_float(double, start_stamp, start.seconds())
-                lttng_ust_field_float(double, end_stamp, end.seconds())
-                    lttng_ust_field_string(label, label.c_str()))
+            lttng_ust_field_float(double, duration,
+                                  static_cast<double>(duration.count()))
+                lttng_ust_field_string(label, label.c_str()))
 
 )
 
@@ -94,8 +96,9 @@ LTTNG_UST_TRACEPOINT_EVENT_INSTANCE(
 
     compute_cpu,
 
-    LTTNG_UST_TP_ARGS(std::shared_ptr<rclcpp::Node>&, node, rclcpp::Time const&,
-                      start, rclcpp::Time const&, end, std::string, label)
+    LTTNG_UST_TP_ARGS(std::shared_ptr<rclcpp::Node>&, node,
+                      std::chrono::nanoseconds const&, duration, std::string,
+                      label)
 
 )
 
@@ -108,9 +111,9 @@ LTTNG_UST_TRACEPOINT_EVENT_INSTANCE(
     LTTNG_UST_TRACEPOINT_PROVIDER,
 
     compute_fpga,
-
-    LTTNG_UST_TP_ARGS(std::shared_ptr<rclcpp::Node>&, node, rclcpp::Time const&,
-                      start, rclcpp::Time const&, end, std::string, label)
+    LTTNG_UST_TP_ARGS(std::shared_ptr<rclcpp::Node>&, node,
+                      std::chrono::nanoseconds const&, duration, std::string,
+                      label)
 
 )
 
@@ -129,13 +132,13 @@ LTTNG_UST_TRACEPOINT_LOGLEVEL(LTTNG_UST_TRACEPOINT_PROVIDER, compute_fpga,
   lttng_ust_tracepoint(slam_tracepoint_provider, ros2_callback_exit, node, \
                        time, label)
 
-#define TP_COMPUTE_CPU(node, start_time, end_time, label)           \
-  lttng_ust_tracepoint(slam_tracepoint_provider, compute_cpu, node, \
-                       start_time, end_time, label)
+#define TP_COMPUTE_CPU(node, duration, label)                                 \
+  lttng_ust_tracepoint(slam_tracepoint_provider, compute_cpu, node, duration, \
+                       label)
 
-#define TP_COMPUTE_FPGA(node, start_time, end_time, label)           \
-  lttng_ust_tracepoint(slam_tracepoint_provider, compute_fpga, node, \
-                       start_time, end_time, label)
+#define TP_COMPUTE_FPGA(node, duration, label)                                 \
+  lttng_ust_tracepoint(slam_tracepoint_provider, compute_fpga, node, duration, \
+                       label)
 
 #endif /* _TP_H */
 
