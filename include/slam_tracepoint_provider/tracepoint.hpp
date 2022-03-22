@@ -22,7 +22,8 @@ LTTNG_UST_TRACEPOINT_EVENT_CLASS(
                       timepoint, char const*, label),
 
     LTTNG_UST_TP_FIELDS(lttng_ust_field_string(node_name, node->get_name())
-                            lttng_ust_field_float(stamp, timepoint.seconds())
+                            lttng_ust_field_float(double, stamp,
+                                                  timepoint.seconds())
                                 lttng_ust_field_string(label, label))
 
 )
@@ -74,10 +75,11 @@ LTTNG_UST_TRACEPOINT_EVENT_CLASS(
     LTTNG_UST_TP_ARGS(std::shared_ptr<rclcpp::Node>&, node, rclcpp::Time const&,
                       start, rclcpp::Time const&, end, char const*, label),
 
-    LTTNG_UST_TP_FIELDS(lttng_ust_field_string(node_name, node->get_name())
-                            lttng_ust_field_float(start_stamp, start.seconds())
-                                lttng_ust_field_float(end_stamp, end.seconds())
-                                    lttng_ust_field_string(label, label))
+    LTTNG_UST_TP_FIELDS(
+        lttng_ust_field_string(node_name, node->get_name())
+            lttng_ust_field_float(double, start_stamp, start.seconds())
+                lttng_ust_field_float(double, end_stamp, end.seconds())
+                    lttng_ust_field_string(label, label))
 
 )
 
