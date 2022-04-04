@@ -125,17 +125,33 @@ LTTNG_UST_TRACEPOINT_LOGLEVEL(LTTNG_UST_TRACEPOINT_PROVIDER, compute_fpga,
 
 /* helper macros */
 
+/**
+ * @brief ROS2 Callback enter tracepoint
+ *
+ */
 #define TP_CALLBACK_ENTER(node, time, label)                                \
   lttng_ust_tracepoint(slam_tracepoint_provider, ros2_callback_enter, node, \
                        time, label)
+/**
+ * @brief ROS2 Callback exit tracepoint
+ *
+ */
 #define TP_CALLBACK_EXIT(node, time, label)                                \
   lttng_ust_tracepoint(slam_tracepoint_provider, ros2_callback_exit, node, \
                        time, label)
 
+/**
+ * @brief CPU Computation Tracepoint
+ *
+ */
 #define TP_COMPUTE_CPU(node, duration, label)                                 \
   lttng_ust_tracepoint(slam_tracepoint_provider, compute_cpu, node, duration, \
                        label)
 
+/**
+ * @brief FPGA Computation Tracepoint
+ *
+ */
 #define TP_COMPUTE_FPGA(node, duration, label)                                 \
   lttng_ust_tracepoint(slam_tracepoint_provider, compute_fpga, node, duration, \
                        label)
