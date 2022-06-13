@@ -1,3 +1,5 @@
+#ifdef LTTNG_ENABLED
+
 #undef LTTNG_UST_TRACEPOINT_PROVIDER
 #define LTTNG_UST_TRACEPOINT_PROVIDER slam_tracepoint_provider
 
@@ -159,3 +161,32 @@ LTTNG_UST_TRACEPOINT_LOGLEVEL(LTTNG_UST_TRACEPOINT_PROVIDER, compute_fpga,
 #endif /* _TP_H */
 
 #include <lttng/tracepoint-event.h>
+
+#else
+/**
+ * @brief ROS2 Callback enter tracepoint
+ * @note No-Op when LTTNG is disabled
+ *
+ */
+#define TP_CALLBACK_ENTER(node, time, label)
+/**
+ * @brief ROS2 Callback exit tracepoint
+ * @note No-Op when LTTNG is disabled
+ *
+ */
+#define TP_CALLBACK_EXIT(node, time, label)
+
+/**
+ * @brief CPU Computation Tracepoint
+ * @note No-Op when LTTNG is disabled
+ */
+#define TP_COMPUTE_CPU(node, duration, label)
+
+/**
+ * @brief FPGA Computation Tracepoint
+ * @note No-Op when LTTNG is disabled
+ *
+ */
+#define TP_COMPUTE_FPGA(node, duration, label)
+
+#endif /* LTTNG_ENABLED */

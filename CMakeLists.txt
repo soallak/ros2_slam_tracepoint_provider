@@ -11,9 +11,15 @@ find_package(PkgConfig REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(ament_cmake REQUIRED)
 
-pkg_check_modules(lttng REQUIRED IMPORTED_TARGET lttng-ust>=2.13.0)
-
 add_library(${PROJECT_NAME} SHARED src/tracepoint.cpp)
+
+if(TRACETOOLS_LTTNG_ENABLED)
+  pkg_check_modules(lttng REQUIRED IMPORTED_TARGET lttng-ust>=2.13.0)
+  target_compile_definitions(${PROJECT_NAME} PUBLIC LTTNG_ENABLED)
+else()
+  message(WARNING "LTTnG is disabled")
+endif()
+
 target_include_directories(
   ${PROJECT_NAME}
   PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
