@@ -10,3 +10,17 @@ Refer to the header file [tracepoint.hpp](include/slam_tracepoint_provider/trace
 - `TP_COMPUTE_FPGA`
 - `TP_CALLBACK_ENTER`
 - `TP_CALLBACK_EXIT`
+
+## Usage
+
+Start: 
+```
+lttng create <session-name>
+lttng enable-event --userspace slam_tracepoint_provider:'*' 
+lttng start
+```
+
+Stop:
+```
+lttng stop
+```
